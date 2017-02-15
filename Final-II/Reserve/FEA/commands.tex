@@ -1,0 +1,111 @@
+\ProvidesPackage{commands}
+\documentclass[11pt]{article}
+\usepackage{epstopdf}
+\usepackage{amsmath}
+\usepackage{epsf}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{color}
+\usepackage{mathtools}
+\usepackage{placeins}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage[margin=0.7in, paperwidth=8.5in, paperheight=11in]{geometry}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsbsy}
+\usepackage{authblk}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{titlesec}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{mathtools}
+\usepackage{titlesec}
+\usepackage{empheq}
+\usepackage[latin1]{inputenc}\newcommand{\bs}[1]{\boldsymbol{#1}}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+
+\newcommand{\del}[2]{\frac{\partial {#1}}{\partial {#2}}}
+\newcommand{\D}[2]{\frac{D^{\overline{\alpha}}}{\overline{\alpha !}}{#1}(#2,#2)\ {\bf x}^{\overline{\alpha}}}
+\newcommand{\dv}[3]{\frac{{\rm d}^{#1}{#2}}{d{#3}^{#1}}}
+\newcommand{\ddel}[5]{\frac{\partial^{ {#1} + {#2}} {#3}}{\partial {#4}^{#1} \partial{#5}^{#2}}}
+\newcommand{\dev}{{\rm {\bf dev}}}
+\newcommand{\proj}[1]{\frac{1}{R^2}{\bf X}\otimes{\bf X}}
+\newcommand{\Ie}[1]{I^{\rm e}_{#1}}
+\newcommand{\Ce}[1]{\bf C^{\rm e^{#1}}}
+\newcommand{\Fe}[2]{F^{\rm e^{#2}}_{#1}}
+\newcommand{\Fv}[2]{F^{\rm v^{#2}}_{#1}}
+\newcommand{\C}[2]{C^{\rm {#2}}_{#1}}
+\newcommand{\f}[2]{f^{\rm {#2}}_{#1}}
+\newcommand{\B}[2]{B^{\rm {#2}}_{#1}}
+\newcommand{\E}[2]{E^{\rm {#2}}_{#1}}
+\newcommand{\fv}[2]{f^{\rm v^{#2}}_{#1}}
+\newcommand{\dfv}[2]{\dot{f}^{\rm v^{#2}}_{#1}}
+\newcommand{\tGam}[2]{\tilde{\Gamma}^{\rm v^{#2}}_{#1}}
+\newcommand{\Gam}[2]{\Gamma^{\rm v^{#2}}_{#1}}
+\newcommand{\A}[1]{\mathcal{A}_{#1}}
+\newcommand{\F}[2]{F^{\rm #2}_{#1}}
+\newcommand{\hpeq}{\hat{\psi}^{\rm Eq}}
+\newcommand{\hpneq}{\hat{\psi}^{\rm NEq}}
+\newcommand{\etak}{\eta_K({I_1,I_2,J},{\bf C^{\rm e}, B^{\rm v}})}
+\newcommand{\nuk}{\nu_K({I_1,I_2,J},{\bf C^{\rm e}, B^{\rm v}})}
+\newcommand{\thetak}{\theta_K({I_1,I_2,J},{\bf C^{\rm e}, B^{\rm v}})}
+\newcommand{\etaj}{\eta_J({I_1,I_2,J},{\bf C^{\rm e}, B^{\rm v}})}
+\newcommand{\dFv}[2]{\dot{F}^{\rm v^{#2}}_{#1}}
+\newcommand{\hatpsi}{\widehat{\psi}(I_1, I_2,I^{\rm e}_1,I^{\rm e}_2,J)}
+\newcommand{\hpsi}{\widehat{\psi}(I_1,I^{\rm e}_1,J)}
+\newcommand{\Fh}[1]{\widehat{\mathcal{F}}\left({\bf F, \Fv{}{}}, {#1}\right)}
+\newcommand{\Fhstar}[1]{\widehat{\mathcal{F}}^*\left({\bf F, \Fv{}{}}, {#1}\right)}
+\newcommand{\sbar}{\overline{\bm{\sigma}}}
+\newcommand{\hpsicomp}[1]{\sum_{r=1}^{2}\left\{\frac{3^{1-\alpha_r}}{2\alpha_r}\mu_r(I^{\alpha_r}_1-3^{\alpha_r})
++\frac{3^{1-a_r}}{2a_r}m_r({\Ie{1}}^{^{a_r}}-3^{a_r})\right\}
++\mu{#1}+\kappa{#1}^2}
+\newcommand{\Ni}[1]{N^{(e)}_i(#1)}
+\newcommand{\hNi}[1]{\hat{{N}}^{(e)}_i(#1)}
+\newcommand{\Ld}{L^{\dagger}}
+\newcommand{\intinfinf}{\int_{-\infty}^{\infty} \int_{-\infty}^{\infty}}
+\newcommand{\LLnorm}[1]{\left\lVert{#1}\right\rVert_2}
+\newcommand{\Linorm}[1]{{\left\lVert{#1}\right\rVert_\infty}}
+\newcommand{\tr}{\rm tr}
+\newcommand{\deldel}[2]{\frac{\partial^2 {#1}}{\partial {#2}^2}}
+\newcommand{\kd}[1]{\delta_{#1}}
+\newcommand{\Fie}[1]{{\bf F}^{#1}}
+\newcommand{\Comp}{\emph{CompStrainStress\_Cee570.m}}
+\newcommand{\Comps}{\emph{CompStrainStress\_Elem\_Cee570.m}}
+\newcommand{\Feap}{\emph{FEA\_Program.m}}
+\newcommand{\Elast}{\emph{Elast2d\_Elem.m}}
+\newcommand{\Assem}{\em{AssemStifForc.m}}
+\newcommand{\Fb}{\em{F\_bar\_int}}
+\newcommand{\Form}{\em{FormFE.m}}
+\newcommand{\Sol}{\em{SolveFE.m}}
+\newcommand{\inpt}{\em{triangtwo.m}}
+\newcommand{\dis}[2]{d^{{#2}}_{#1}}
+\newcommand{\vel}[2]{v^{{#2}}_{#1}}
+
+
+\newcommand\myeq{\stackrel{\mathclap{\normalfont\mbox{def}}}{=}}
+
+
+% Matrix Spacing: 
+\makeatletter
+\renewcommand*\env@matrix[1][\arraystretch]{%
+  \edef\arraystretch{#1}%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{*\c@MaxMatrixCols c}}
+\makeatother
+
+\titlespacing\section{10pt}{10pt plus 4pt minus 2pt}{10pt plus 2pt minus 2pt}
+\titlespacing\subsection{0pt}{8pt plus 4pt minus 2pt}{8pt plus 2pt minus 2pt}
+\titlespacing\subsubsection{0pt}{12pt plus 4pt minus 2pt}{6pt plus 2pt minus 2pt}
+\titlespacing*{\title}{-2ex}{*-2ex}{-2ex}
+\usepackage{color} %red, green, blue, yellow, cyan, magenta, black, white
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+\setlength\parindent{0pt}
+\graphicspath{{Figures/}}
