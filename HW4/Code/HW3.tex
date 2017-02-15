@@ -1,0 +1,298 @@
+\input{commands}
+\title{\bf CEE 576: Nonlinear Finite Elements \\ HW Assignment 4}
+\author{Bhavesh Shrimali \\ NetID: bshrima2}
+\date{\today}
+\begin{document}
+\maketitle \hrule \hrule \hrule
+\section*{Sol$^n$ 1: }
+Given Deformation Mapping: 
+\[
+\bm{\phi}({\bf z})
+=
+z_1(1+z_2){\bf e}_1
++ z_2(1+3z_1){\bf e}_2
++ z_3{\bf e}_3
+\]
+The deformation gradient can be computed as follows:
+\begin{align*}
+{\bf F}
+=
+\del{\bm\phi}{\bf z}({\bf z})=
+\begin{bmatrix}
+1+z_2 & z_1 & 0\\
+3z_2 & 1+3z_1 & 0\\
+0 & 0 & 1
+\end{bmatrix}
+\end{align*}
+The Lagrangian Strain Tensor is given by
+\begin{align*}
+{\bf E}
+& =
+\frac{\bf \F{}{T}\F{}{}-I}{2} \\
+& = \frac{1}{2}
+\begin{bmatrix}
+(1+z_2)^2 + 9z^2_2 & 3z_2(1+3z_1)+z_1(1+z_2) & 0\\
+9z^2_2 & 3z_2(1+3z_1)+z_1(1+z_2) & (1+3z_1)^2 + z_1^2 & 0\\
+0 & 0 & 1
+\end{bmatrix}-\frac{1}{2}
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0\\
+0 & 0 & 1
+\end{bmatrix}\\
+& = 
+\frac{1}{2}
+\begin{bmatrix}
+(1+z_2)^2 + 9z^2_2 -1 & 3z_2(1+3z_1)+z_1(1+z_2) & 0\\
+9z^2_2 & 3z_2(1+3z_1)+z_1(1+z_2) & (1+3z_1)^2 + z_1^2 - 1 & 0\\
+0 & 0 & 0
+\end{bmatrix}
+\end{align*}
+The Green deformation strain tensor is given by
+\begin{align*}
+{\bf C}
+& = {\bf \F{}{T} F}\\
+& = \begin{bmatrix}
+(1+z_2)^2 + 9z^2_2 & 3z_2(1+3z_1)+z_1(1+z_2) & 0\\
+9z^2_2 & 3z_2(1+3z_1)+z_1(1+z_2) & (1+3z_1)^2 + z_1^2 & 0\\
+0 & 0 & 1
+\end{bmatrix}
+\end{align*}
+Substituting the coordinates respectively we get
+\begin{align*}
+{\bf E}
+& =
+\begin{bmatrix}
+6 & 7 & 0\\
+7 & 8 & 0\\
+0 & 0 & 0
+\end{bmatrix}\\
+{\bf C}
+& =
+\begin{bmatrix}
+13 & 14 & 0\\
+14 & 17 & 0\\
+0 & 0 & 1
+\end{bmatrix}
+\end{align*}
+The principal stretches are the eigenvalues, and the principal directions are the corresponding eigenvectors, of $\bf C$. Therefore
+\begin{align*}
+\det\left({\bf C}-\lambda{\bf I}\right) = 0
+\implies 
+\begin{vmatrix}
+13-\lambda & 14 & 0\\
+14 & 17-\lambda & 0\\
+0 & 0 & 1-\lambda
+\end{vmatrix} = 0 \\ 
+\lambda = 1\ \ \ \ \text{or}\ \ \ \lambda^2 - 30\lambda + 25 = 0 \\
+\lambda = 1,15\pm10\sqrt{2}
+\end{align*}
+Hence the principal stretches are $0,15\pm10\sqrt{2}$
+Now the corresponding principal directions, which are the corresponding eigenvectors, as follows: 
+\begin{itemize}
+\item Corresponding to $\lambda = 1$
+\begin{align*}
+{\bf v}^{(1)}
+=
+\begin{Bmatrix}
+0\\0\\1
+\end{Bmatrix}
+\end{align*}
+\item Corresponding to $\lambda=15-10\sqrt{2}$
+\begin{align*}
+{\bf v}^{(2)}
+=
+\begin{Bmatrix}
+-0.755\\0.655\\0
+\end{Bmatrix}
+\end{align*}
+\item Corresponding to $\lambda = 15+10\sqrt{2}$
+\begin{align*}
+{\bf v}^{(3)}
+=
+\begin{Bmatrix}
+0.655\\-0.755\\0
+\end{Bmatrix}
+\end{align*}
+\end{itemize}\hrule
+\section*{Sol$^n$ 2:}
+Given deformation mapping
+\begin{align*}
+u({\bf X},t)
+=
+{\bf N}({\bf X}){\bf u}(t)
+=
+\frac{1}{l_0}
+[X_2 - X\ \ X-X_1]
+\begin{Bmatrix}
+u_1(t)\\u_2(t)
+\end{Bmatrix}
+\end{align*}
+where $l_0 = X_2 - X_1$
+\section*{Sol$^n$ 3: }
+Given motion 
+\[
+x = X + Yt\ ; \ \ \ y = Y + \frac{1}{2}Xt
+\]
+\subsection*{(a)}
+The position coordinates of the element as $t=1$ can be sketched as follows: \\
+The Deformation gradient, $\bf F$, associated with the given deformation mapping, $\bm\chi({\bf X})$, can be given by:
+\begin{align*}
+{\bf F} ({\bf X},t)
+& = \del{\bm\chi}{\bf X}({\bf X}, t)\\
+& = \begin{bmatrix}
+1 & t\\
+t/2 & 1
+\end{bmatrix}
+\end{align*}
+The green strain tensor can be calculated as follows:
+\begin{align*}
+{\bf C} 
+& = {\bf \F{}{T} F} = \begin{bmatrix}
+1+t^2/4 & 3t/2\\
+3t/2 & 1+t^2
+\end{bmatrix}\\
+{\bf E}
+& =
+\frac{1}{2}
+({\bf \F{}{T} F - I})
+=
+\frac{1}{2}
+\begin{bmatrix}
+t^2/4 & 3t/2\\
+3t/2 & t^2
+\end{bmatrix}
+=
+\frac{t}{8}
+\begin{bmatrix}
+t & 6\\
+6 & 4t
+\end{bmatrix}
+\end{align*}
+At $t=1$, 
+\begin{align*}
+{\bf C}
+=
+\frac{1}{4}
+\begin{bmatrix}
+5 & 6\\
+6 & 8
+\end{bmatrix}\ ;\ \ \ \ \ {\bf E} = \frac{1}{8}\begin{bmatrix}
+1 & 6\\
+6 & 4
+\end{bmatrix}
+\end{align*}
+\subsection*{(b):}
+The displacement field can be given as: 
+\[
+{\bf u} = {\bm\chi}({\bf X},t) - {\bf X}
+\]
+The velocity and accelerations can be calculated as follows: 
+\begin{align*}
+{\bf v}({\bf X},t)
+& = \del{{\bf u}}{t}({\bf X},t) 
+= 
+\del{\bm\chi}{t}({\bf X},t) \\
+& = 
+\del{(X+Yt)}{t}{\bf e}_1 
++ 
+\del{(Y+\frac{1}{2}Xt)}{t}{\bf e}_2 \\
+{\bf v}({\bf X},1)&  = 
+Y{\bf e}_1
++ 
+\frac{1}{2}X{\bf e}_2 \\
+{\bf a}({\bf X},t)
+& =
+\deldel{{\bf u}}{t}({\bf X},t) = {\bf 0}
+\end{align*}
+\subsection*{(c):}
+The rate of deformation is given by
+\begin{align*}
+L_{ij}
+& =
+\del{v_i}{x_j} = \del{v_i}{X_k}\del{X_k}{x_j} = \del{v_i}{X_k}\F{kj}{-1}
+\end{align*} 
+In abstract notation this can be written as
+\begin{align*}
+{\bf L} & = \del{\bf v}{\bf X}{\bf \F{}{-1}}\\ \\
+\del{\bf v}{\bf X} & = \begin{bmatrix}
+0 & 1\\
+1/2 & 0 
+\end{bmatrix}\ ; \ \ \ \ \ {\bf \F{}{-1}} = \frac{1}{t^2-2} \begin{bmatrix}
+-2 & 2t \\
+t & -2
+\end{bmatrix}
+\end{align*}
+Thus we finally get the deformation rate tensor as 
+\begin{align*}
+{\bf L}
+=
+\frac{1}{t^2-2}
+\begin{bmatrix}
+t & -2\\
+-1 & t
+\end{bmatrix}
+\end{align*}
+$\bf L$ can be decomposed into its symmetric and skew-symmetric parts which are the rate-of-deformation ($\bf D$) and the spin tensor ($\bm\Omega$) respectively 
+\begin{align*}
+{\bf D} 
+& = \frac{1}{2}({\bf L}+{\bf L}^T)
+= \frac{1}{t^2-2}
+\begin{bmatrix}
+t & -3/2\\
+-3/2 & t
+\end{bmatrix}\\ \\
+{\bm\Omega}
+& = \frac{1}{2}({\bf L}-{\bf L}^T)
+=
+\frac{1}{t^2-2}
+\begin{bmatrix}
+0 & -1/2\\
+1/2 & 0
+\end{bmatrix}
+\end{align*}
+The corresponding values at $t=1$ are 
+\begin{align*}
+{\bf D}
+& = 
+\begin{bmatrix}
+-1.0 & 1.5 \\
+1.5 & -1.0
+\end{bmatrix} \\
+{\bm\Omega}
+& = 
+\begin{bmatrix}
+0 & 0.5 \\
+-0.5 & 0
+\end{bmatrix}
+\end{align*}
+\subsection*{(d):}
+The above tensors, when evaluated at $t=0.5$, respectively are:
+\begin{align*}
+{\bf D}
+& = 
+\begin{bmatrix}
+-0.2857 & 0.8571\\
+0.8571 & -0.2857
+\end{bmatrix} \\ \\
+{\bm\Omega}
+& =
+\begin{bmatrix}
+0 & 0.2857\\
+-0.2857 & 0
+\end{bmatrix}
+\end{align*}
+\subsection*{(e):}
+The determinant of the deformation gradient, $\bf F$, given by $J=\det\bf F$ is
+\[
+J = \det \begin{bmatrix}
+1 & t\\
+0.5t & 1
+\end{bmatrix} = 1-0.5t^2
+\]
+We know that for any physically realizable deformation mapping $\bm\chi$, we should have 
+\begin{align*}
+J>0\ \ \  \forall t > 0 \implies 1-0.5t^2 > 0\ \ \ \ \ \text{or}\ \ \ \ 0<t<\sqrt{2}
+\end{align*}
+Hence the Jacobian of transformation remains positive for $t\in [0,\sqrt{2})$ and changes sign at $t=\sqrt{2}$. The Jacobian vanishes at $t=\sqrt{2}$, hence violating the conservation of mass. The deformation mapping is not physically realizable beyond that point.  
+\end{document}
