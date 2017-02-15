@@ -1,0 +1,222 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>HW12</title><meta name="generator" content="MATLAB 8.1"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-09-09"><meta name="DC.source" content="HW12.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, tt, code { font-size:12px; }
+pre { margin:0px 0px 20px; }
+pre.error { color:red; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">%Nonlinear Finite Element Method : Fall 2016</span>
+clear <span class="string">all</span>; close <span class="string">all</span>; clc;
+disp (<span class="string">'%-------------------------------------------------------------------------%'</span>)
+disp (<span class="string">'%         CEE 576: Nonlinear Finite Element Method                        %'</span>)
+disp (<span class="string">'%      HW Assignment #1  Problem #2                                       %'</span>)
+disp (<span class="string">'%-------------------------------------------------------------------------%'</span>)
+<span class="comment">% Note that we make use of the isoparametric mapping here</span>
+syms <span class="string">xe1</span> <span class="string">he</span> <span class="string">xe2</span> <span class="string">xe3</span> <span class="string">xc</span> <span class="string">de1</span> <span class="string">de2</span> <span class="string">de3</span> <span class="string">real</span>;
+
+Jacb = 0.5*xe1*(2*xc-1) - 2*xc*xe2 + 0.5*xe3*(2*xc+1);
+N1 = xc*(xc-1)/2;
+N2 = (1-xc)*(1+xc);
+N3 = xc*(xc+1)/2;
+
+N = [N1*N1 N1*N2 N1*N3;
+     N1*N2 N2*N2 N2*N3;
+     N1*N3 N2*N3 N3*N3];
+
+ N = N*Jacb;
+ Fext_matrix = simplify(subs(N,xc,-(3)^(-0.5)) + subs(N,xc,(3)^(-0.5)))
+ <span class="comment">% The above is true, in general, for any given values of xe1, xe2, xe3</span>
+ <span class="comment">% However numerical evaluation is presented corresponding to the following</span>
+ <span class="comment">% values</span>
+
+ J_1 = 1/Jacb;
+ Na = [diff(N1,xc);diff(N2,xc);diff(N3,xc)];
+ Na =simplify(Na);
+ Nb = [N1 N2 N3];
+
+ d = Na' * [de1;de2;de3];
+ d = simplify(d);
+ K_matrix1 = J_1 * Na * Nb * d;
+ K_matrix1 = simplify(K_matrix1);
+
+ K_matrix2 = J_1 * (Na) * (Na)';
+
+ xc = -(3)^(-0.5);
+ K1_1 = simplify(subs(K_matrix1));
+ K2_1 = simplify(subs(K_matrix2));
+
+ xc = (3)^(-0.5);
+ K1_2 = simplify(subs(K_matrix1));
+ K2_2 = simplify(subs(K_matrix2));
+
+ <span class="comment">% Sample Calculations for some specific values of xe_i</span>
+ xe1 = 0;
+ xe2 = he/2;
+ xe3 = he;
+
+ Fext_matrix = simplify(subs(Fext_matrix));
+K1_1 = simplify(subs(K1_1))
+K1_2 = simplify(subs(K1_2))
+K2_1 = simplify(subs(K2_1))
+K2_2 = simplify(subs(K2_2))
+</pre><pre class="codeoutput">%-------------------------------------------------------------------------%
+%         CEE 576: Nonlinear Finite Element Method                        %
+%      HW Assignment #1  Problem #2                                       %
+%-------------------------------------------------------------------------%
+ 
+Fext_matrix =
+ 
+[     (2*xe2)/9 - (2*xe1)/9, (4*xe2)/9 - xe1/3 - xe3/9,           xe1/18 - xe3/18]
+[ (4*xe2)/9 - xe1/3 - xe3/9,     (4*xe3)/9 - (4*xe1)/9, xe1/9 - (4*xe2)/9 + xe3/3]
+[           xe1/18 - xe3/18, xe1/9 - (4*xe2)/9 + xe3/3,     (2*xe3)/9 - (2*xe2)/9]
+ 
+ 
+K1_1 =
+ 
+[ (3^(1/2)*(3^(1/2)/3 + 1)*(3^(1/2)/3 + 1/2)*(de1*(3^(1/2)/3 + 1/2) - (2*3^(1/2)*de2)/3 + de3*(3^(1/2)/3 - 1/2)))/(6*((3^(1/2)*he)/3 - (he*((2*3^(1/2))/3 - 1))/2)),     (7*de1 - 8*de2 + de3 + 4*3^(1/2)*de1 - 4*3^(1/2)*de2)/(9*he), (3^(1/2)*(3^(1/2)/3 - 1)*(3^(1/2)/3 + 1/2)*(de1*(3^(1/2)/3 + 1/2) - (2*3^(1/2)*de2)/3 + de3*(3^(1/2)/3 - 1/2)))/(6*((3^(1/2)*he)/3 - (he*((2*3^(1/2))/3 - 1))/2))]
+[                          -((3^(1/2)/3 + 1)*(de1*(3^(1/2)/3 + 1/2) - (2*3^(1/2)*de2)/3 + de3*(3^(1/2)/3 - 1/2)))/(3*((3^(1/2)*he)/3 - (he*((2*3^(1/2))/3 - 1))/2)), -(8*de1 - 16*de2 + 8*de3 + 4*3^(1/2)*de1 - 4*3^(1/2)*de3)/(9*he),                          -((3^(1/2)/3 - 1)*(de1*(3^(1/2)/3 + 1/2) - (2*3^(1/2)*de2)/3 + de3*(3^(1/2)/3 - 1/2)))/(3*((3^(1/2)*he)/3 - (he*((2*3^(1/2))/3 - 1))/2))]
+[ (3^(1/2)*(3^(1/2)/3 + 1)*(3^(1/2)/3 - 1/2)*(de1*(3^(1/2)/3 + 1/2) - (2*3^(1/2)*de2)/3 + de3*(3^(1/2)/3 - 1/2)))/(6*((3^(1/2)*he)/3 - (he*((2*3^(1/2))/3 - 1))/2)),     (de1 - 8*de2 + 7*de3 + 4*3^(1/2)*de2 - 4*3^(1/2)*de3)/(9*he), (3^(1/2)*(3^(1/2)/3 - 1)*(3^(1/2)/3 - 1/2)*(de1*(3^(1/2)/3 + 1/2) - (2*3^(1/2)*de2)/3 + de3*(3^(1/2)/3 - 1/2)))/(6*((3^(1/2)*he)/3 - (he*((2*3^(1/2))/3 - 1))/2))]
+ 
+ 
+K1_2 =
+ 
+[ -(3^(1/2)*(3^(1/2)/3 - 1)*(3^(1/2)/3 - 1/2)*(de1*(3^(1/2)/3 - 1/2) - (2*3^(1/2)*de2)/3 + de3*(3^(1/2)/3 + 1/2)))/(6*((3^(1/2)*he)/3 - (he*((2*3^(1/2))/3 + 1))/2)),     (7*de1 - 8*de2 + de3 - 4*3^(1/2)*de1 + 4*3^(1/2)*de2)/(9*he), -(3^(1/2)*(3^(1/2)/3 + 1)*(3^(1/2)/3 - 1/2)*(de1*(3^(1/2)/3 - 1/2) - (2*3^(1/2)*de2)/3 + de3*(3^(1/2)/3 + 1/2)))/(6*((3^(1/2)*he)/3 - (he*((2*3^(1/2))/3 + 1))/2))]
+[                            ((3^(1/2)/3 - 1)*(de1*(3^(1/2)/3 - 1/2) - (2*3^(1/2)*de2)/3 + de3*(3^(1/2)/3 + 1/2)))/(3*((3^(1/2)*he)/3 - (he*((2*3^(1/2))/3 + 1))/2)), -(8*de1 - 16*de2 + 8*de3 - 4*3^(1/2)*de1 + 4*3^(1/2)*de3)/(9*he),                            ((3^(1/2)/3 + 1)*(de1*(3^(1/2)/3 - 1/2) - (2*3^(1/2)*de2)/3 + de3*(3^(1/2)/3 + 1/2)))/(3*((3^(1/2)*he)/3 - (he*((2*3^(1/2))/3 + 1))/2))]
+[ -(3^(1/2)*(3^(1/2)/3 - 1)*(3^(1/2)/3 + 1/2)*(de1*(3^(1/2)/3 - 1/2) - (2*3^(1/2)*de2)/3 + de3*(3^(1/2)/3 + 1/2)))/(6*((3^(1/2)*he)/3 - (he*((2*3^(1/2))/3 + 1))/2)),     (de1 - 8*de2 + 7*de3 - 4*3^(1/2)*de2 + 4*3^(1/2)*de3)/(9*he), -(3^(1/2)*(3^(1/2)/3 + 1)*(3^(1/2)/3 + 1/2)*(de1*(3^(1/2)/3 - 1/2) - (2*3^(1/2)*de2)/3 + de3*(3^(1/2)/3 + 1/2)))/(6*((3^(1/2)*he)/3 - (he*((2*3^(1/2))/3 + 1))/2))]
+ 
+ 
+K2_1 =
+ 
+[  (4*3^(1/2) + 7)/(6*he), -(2*3^(1/2) + 4)/(3*he),                1/(6*he)]
+[ -(2*3^(1/2) + 4)/(3*he),                8/(3*he),  (2*3^(1/2) - 4)/(3*he)]
+[                1/(6*he),  (2*3^(1/2) - 4)/(3*he), -(4*3^(1/2) - 7)/(6*he)]
+ 
+ 
+K2_2 =
+ 
+[ -(4*3^(1/2) - 7)/(6*he),  (2*3^(1/2) - 4)/(3*he),                1/(6*he)]
+[  (2*3^(1/2) - 4)/(3*he),                8/(3*he), -(2*3^(1/2) + 4)/(3*he)]
+[                1/(6*he), -(2*3^(1/2) + 4)/(3*he),  (4*3^(1/2) + 7)/(6*he)]
+ 
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2013a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%Nonlinear Finite Element Method : Fall 2016
+clear all; close all; clc;
+disp ('%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-%')
+disp ('%         CEE 576: Nonlinear Finite Element Method                        %')
+disp ('%      HW Assignment #1  Problem #2                                       %')
+disp ('%REPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASHREPLACE_WITH_DASH_DASH-%')
+% Note that we make use of the isoparametric mapping here
+syms xe1 he xe2 xe3 xc de1 de2 de3 real;
+
+Jacb = 0.5*xe1*(2*xc-1) - 2*xc*xe2 + 0.5*xe3*(2*xc+1);
+N1 = xc*(xc-1)/2;
+N2 = (1-xc)*(1+xc);
+N3 = xc*(xc+1)/2;
+
+N = [N1*N1 N1*N2 N1*N3;
+     N1*N2 N2*N2 N2*N3;
+     N1*N3 N2*N3 N3*N3];
+ 
+ N = N*Jacb;
+ Fext_matrix = simplify(subs(N,xc,-(3)^(-0.5)) + subs(N,xc,(3)^(-0.5))) 
+ % The above is true, in general, for any given values of xe1, xe2, xe3
+ % However numerical evaluation is presented corresponding to the following
+ % values
+ 
+ J_1 = 1/Jacb;
+ Na = [diff(N1,xc);diff(N2,xc);diff(N3,xc)];
+ Na =simplify(Na);
+ Nb = [N1 N2 N3];
+ 
+ d = Na' * [de1;de2;de3];
+ d = simplify(d);
+ K_matrix1 = J_1 * Na * Nb * d;
+ K_matrix1 = simplify(K_matrix1);
+ 
+ K_matrix2 = J_1 * (Na) * (Na)';
+ 
+ xc = -(3)^(-0.5);
+ K1_1 = simplify(subs(K_matrix1));
+ K2_1 = simplify(subs(K_matrix2));
+ 
+ xc = (3)^(-0.5);
+ K1_2 = simplify(subs(K_matrix1));
+ K2_2 = simplify(subs(K_matrix2));
+ 
+ % Sample Calculations for some specific values of xe_i 
+ xe1 = 0;
+ xe2 = he/2; 
+ xe3 = he;
+ 
+ Fext_matrix = simplify(subs(Fext_matrix));
+K1_1 = simplify(subs(K1_1))
+K1_2 = simplify(subs(K1_2))
+K2_1 = simplify(subs(K2_1))
+K2_2 = simplify(subs(K2_2))
+ 
+ 
+ 
+ 
+##### SOURCE END #####
+--></body></html>
